@@ -33,10 +33,11 @@ class HashTable:
 
 		Implement this, and/or FNV-1.
 		"""
-		hash_output = 5381                                                  # set default hash to this number
-		for char in key:                                                    # for each character in the key
-			hash_output = ((hash_output << 5) + hash_output) + ord(char)    # shifts all bits 5 places to the left and adds the original hash to it
-		                                                                    # then adds to the hash the Unicode for each individual character
+		hash_output = 5381  # set default hash to this number
+		for char in key:  # for each character in the key
+			hash_output = ((hash_output << 5) + hash_output) + ord(char)
+			# shifts all bits 5 places to the left and adds the original hash to it
+			# then adds to the hash the Unicode for each individual character
 		return hash_output
 
 	def hash_index(self, key):
@@ -45,6 +46,7 @@ class HashTable:
 		between within the storage capacity of the hash table.
 		"""
 		# return self.fnv1(key) % self.capacity
+		# print(self.djb2(key) % self.capacity)
 		return self.djb2(key) % self.capacity
 
 	def put(self, key, value):
@@ -56,18 +58,7 @@ class HashTable:
 		Implement this.
 		"""
 		index = self.hash_index(key)    # After creating the index through the hashing algorithm
-		self.storage[index] = value     # Put the value that was passed in at that index
-
-	def delete(self, key):
-		"""
-		Remove the value stored with the given key.
-
-		Print a warning if the key is not found.
-
-		Implement this.
-		"""
-		index = self.hash_index(key)    # Find the index for the value from the key via hashing algorithm
-		self.storage[index] = None      # Set whatever is at that current index to None
+		self.storage[index] = HashTableEntry(key, value)     # Put the value that was passed in at that index
 
 	def get(self, key):
 		"""
@@ -77,8 +68,21 @@ class HashTable:
 
 		Implement this.
 		"""
-		index = self.hash_index(key)                # Find the index created through the hashing algorithm
-		return self.storage[index]                  # Return what is at that index
+		index = self.hash_index(key)  # Find the index created through the hashing algorithm
+		node = self.storage[index]
+		if node is not None:
+			return node.value
+
+	def delete(self, key):
+		"""
+		Remove the value stored with the given key.
+
+		Print a warning if the key is not found.
+
+		Implement this.
+		"""
+		index = self.hash_index(key)  # Find the index for the value from the key via hashing algorithm
+		self.storage[index] = None
 
 	def resize(self):
 		"""
@@ -87,6 +91,7 @@ class HashTable:
 
 		Implement this.
 		"""
+
 
 
 if __name__ == "__main__":
