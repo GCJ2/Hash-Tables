@@ -58,7 +58,18 @@ class HashTable:
 		Implement this.
 		"""
 		index = self.hash_index(key)    # After creating the index through the hashing algorithm
-		self.storage[index] = HashTableEntry(key, value)     # Put the value that was passed in at that index
+		node = self.storage[index]
+		if node is None:
+			self.storage[index] = HashTableEntry(key, value)     # Put the value that was passed in at that index
+			return
+		prev = node
+		while node is not None and node.key != key:
+			prev = node
+			node = node.next
+		if prev.key == key:
+			prev.value = value
+		else:
+			prev.next = HashTableEntry(key, value)
 
 	def get(self, key):
 		"""
@@ -70,7 +81,13 @@ class HashTable:
 		"""
 		index = self.hash_index(key)  # Find the index created through the hashing algorithm
 		node = self.storage[index]
-		if node is not None:
+		# if node is not None:
+		# 	return node.value
+		while node is not None and node.key != key:
+			node = node.next
+		if node is None:
+			return None
+		else:
 			return node.value
 
 	def delete(self, key):
