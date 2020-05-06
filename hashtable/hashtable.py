@@ -19,6 +19,15 @@ class HashTable:
 	def __init__(self, capacity):
 		self.capacity = capacity
 		self.storage = [None] * capacity
+		self.load_factor = 0
+
+	def get_load_factor(self):
+		held_objects = 0
+		for node in self.storage:
+			if node is not None:
+				held_objects += 1
+		load_factor = held_objects / self.capacity
+		return load_factor
 
 	def fnv1(self, key):
 		"""
@@ -36,8 +45,8 @@ class HashTable:
 		hash_output = 5381  # set default hash to this number
 		for char in key:  # for each character in the key
 			hash_output = ((hash_output << 5) + hash_output) + ord(char)
-			# shifts all bits 5 places to the left and adds the original hash to it
-			# then adds to the hash the Unicode for each individual character
+		# shifts all bits 5 places to the left and adds the original hash to it
+		# then adds to the hash the Unicode for each individual character
 		return hash_output
 
 	def hash_index(self, key):
@@ -57,10 +66,10 @@ class HashTable:
 
 		Implement this.
 		"""
-		index = self.hash_index(key)    # After creating the index through the hashing algorithm
+		index = self.hash_index(key)  # After creating the index through the hashing algorithm
 		node = self.storage[index]
 		if node is None:
-			self.storage[index] = HashTableEntry(key, value)     # Put the value that was passed in at that index
+			self.storage[index] = HashTableEntry(key, value)  # Put the value that was passed in at that index
 			return
 		prev = node
 		while node is not None and node.key != key:
@@ -108,11 +117,31 @@ class HashTable:
 
 		Implement this.
 		"""
+		load_factor = self.get_load_factor()
+		print(f'load factor in resize: {load_factor}')
+		if load_factor > 0.7:
+			print('Resizing Hash Map')
+			old_storage = self.storage
+			self.capacity = self.capacity * 2
+			self.storage = [None] * self.capacity
+			for element in old_storage:
+				node = element
+				while node:
+					self.put(node.key, node.value)
+					node = node.next
+			# self.put(node.key, node.value)
+			# node = node.next
 
+		# for node in self.storage:
+		# 	if node is not None:
+		# 		# self.put(node.key, node.value)
+		# 		index = self.hash_index(node.key)
+		# 		new_storage[index] = HashTableEntry(node.key, node.value)
+		# self.storage = new_storage
 
 
 if __name__ == "__main__":
-	ht = HashTable(2)
+	ht = HashTable(8)
 
 	ht.put("line_1", "Tiny hash table")
 	ht.put("line_2", "Filled beyond capacity")
@@ -124,6 +153,10 @@ if __name__ == "__main__":
 	print(ht.get("line_1"))
 	print(ht.get("line_2"))
 	print(ht.get("line_3"))
+
+	print('')
+	# Test Load Factor
+	# print(ht.get_load_factor())
 
 	# Test resizing
 	old_capacity = len(ht.storage)
