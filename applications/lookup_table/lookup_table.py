@@ -1,63 +1,34 @@
 import math
 import random
-# import sys
-# sys.setrecursionlimit(600000)
 
+cache = {}      # Establish cache outside of function to hold lookup list
 
+# 	TODO: Modify to produce the same results, but much faster
 def slowfun(x, y):
-	"""
-	Look up table for math.pow()
-	Each item[i] should be x
-	Each list element should be y
-	{1: [1, 1, 1, 1, 1],
-	2: [2, 4, 8, 16, 32],
-	3: [3, 9, 27, 81, 243]}
-	(3, 5) should 243
-	"""
 
-	# TODO: Modify to produce the same results, but much faster
-	powers_table = {}
-	for i in range(21):
-		powers_table[i] = []
-	for i in range(len(powers_table)):
-		for j in range(1, 7):
-			powers_table[i].append(i ** j)
+	if (x, y) not in cache:         # if (x, y) is not cached, do this. If is, go to line 19
+		# print(f'x, y: {x} {y}')
+		v = math.pow(x, y)
+		# print(f'math.pow: {v}')
+		v = math.factorial(v)
+		# print(f'math.fact: {v}')
+		v //= (x + y)
+		# print(f'//x + y: {v}')
+		cache[(x, y)] = v % 982451653               # This will perform the mod op on the value of x, y from the cache
+		print(f'cache[(x, y)]: {cache[(x, y)]}')    # This prints the value of the lookup in the cache
+	return cache[(x, y)]                            # Returns value of x,y from within the cache
 
-	def get_factorial(n):
-		if n == 1:
-			return n
-		else:
-			return n * get_factorial(n - 1)
-
-	# print(f'x, y: {x} {y}')
-	v = powers_table[x][y - 1]
-	# print(f'pow: {v}')
-	v = get_factorial(v)
-	# print(f'math.fact: {v}')
-	v //= (x + y)
-	# print(f'//x + y: {v}')
-	v %= 982451653
-	# print(f'%: {v}')
-	return v
-
-
-# print(f'x, y: {x} {y}')
-# v = math.pow(x, y)
-# print(f'math.pow: {v}')
-# v = math.factorial(v)
-# print(f'math.fact: {v}')
-# v //= (x + y)
-# print(f'//x + y: {v}')
-# v %= 982451653
-# print(f'%: {v}')
-# return v
+	# The cache allows you to store the values returned from the function call
+	# If the same x, y is passed in, instead of the function needing to run a second time
+	# The data can be pulled directly from
 
 # Do not modify below this line!
 
-for i in range(50):
+for i in range(100):
 	x = random.randrange(2, 14)
 	y = random.randrange(3, 6)
 	print(f'{i}: {x},{y}: {slowfun(x, y)}')
+print(x, y)
 
 # x = 6
 # y = 3
