@@ -129,15 +129,6 @@ class HashTable:
 				while node:
 					self.put(node.key, node.value)
 					node = node.next
-			# self.put(node.key, node.value)
-			# node = node.next
-
-		# for node in self.storage:
-		# 	if node is not None:
-		# 		# self.put(node.key, node.value)
-		# 		index = self.hash_index(node.key)
-		# 		new_storage[index] = HashTableEntry(node.key, node.value)
-		# self.storage = new_storage
 
 
 if __name__ == "__main__":
