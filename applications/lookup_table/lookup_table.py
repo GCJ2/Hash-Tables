@@ -1,5 +1,7 @@
 import math
 import random
+# import sys
+# sys.setrecursionlimit(600000)
 
 
 def slowfun(x, y):
@@ -27,15 +29,15 @@ def slowfun(x, y):
 		else:
 			return n * get_factorial(n - 1)
 
-	print(f'x, y: {x} {y}')
+	# print(f'x, y: {x} {y}')
 	v = powers_table[x][y - 1]
-	print(f'pow: {v}')
+	# print(f'pow: {v}')
 	v = get_factorial(v)
-	print(f'math.fact: {v}')
+	# print(f'math.fact: {v}')
 	v //= (x + y)
-	print(f'//x + y: {v}')
+	# print(f'//x + y: {v}')
 	v %= 982451653
-	print(f'%: {v}')
+	# print(f'%: {v}')
 	return v
 
 
@@ -52,7 +54,7 @@ def slowfun(x, y):
 
 # Do not modify below this line!
 
-for i in range(1):
+for i in range(50):
 	x = random.randrange(2, 14)
 	y = random.randrange(3, 6)
 	print(f'{i}: {x},{y}: {slowfun(x, y)}')
